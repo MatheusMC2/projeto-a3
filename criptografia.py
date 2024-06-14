@@ -85,6 +85,7 @@ def decodificar(frase_codificada, palavra):
             else:
                 num = num % 127
     
+    print(frase_codificada)
     print(frase_decodificada)
 
 palavra_codificada = codificar(frase, matriz_codificadora)
