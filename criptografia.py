@@ -21,13 +21,14 @@ def codificar(frase, palavra):
     for i in range(0, len(frase), 2):
         par = frase[i:i+2]
 
-        # 
+        # Convertendo cada par em uma matriz
         matriz = np.array([[ord(par[0])], [ord(par[1])]])
 
-
-        # 
+        # Calculando o produto da matriz codificadora com a matriz do par de letras
         calculo = np.dot(palavra, matriz)
 
+        # Calculando o módulo de 127 para manter os caracteres na tabela ASCII
+        # e convertendo o resultado de volta para caracteres
         for i, num in enumerate(calculo):
             if num > 127:
                 resultado = num % 127
@@ -47,6 +48,7 @@ def decodificar(frase_codificada, palavra):
 
     inversa = np.round(determinante_palavra * inversa).astype(int)
 
+    # Ajustando valores da matriz inversa para estarem no intervalo de caracteres ASCII
     for i in range(len(inversa)):
         for j in range(len(inversa[i])):
             if inversa[i][j] > 127 or inversa[i][j] < 0:
@@ -54,6 +56,7 @@ def decodificar(frase_codificada, palavra):
 
     determinante = np.linalg.det(palavra)
 
+    # Encontrando o inverso multiplicador modular
     for i in range(1, 127):
         if ((i * int(determinante)) % 127) == 1:
             inverso_multiplicador = i
@@ -61,11 +64,13 @@ def decodificar(frase_codificada, palavra):
 
     matriz_decodificadora = np.dot(inverso_multiplicador, inversa)
 
+    # Ajustando valores da matriz decodificadora
     for i in range(len(matriz_decodificadora)):
         for j in range(len(matriz_decodificadora[i])):
             if matriz_decodificadora[i][j] > 127 or matriz_decodificadora[i][j] < 0:
                 matriz_decodificadora[i][j] = matriz_decodificadora[i][j] % 127
-
+    
+    # Decodificando cada par de caracteres codificados
     for i in range(0, len(frase_codificada), 2):
         par = frase_codificada[i:i+2]
 
